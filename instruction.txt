@@ -1,0 +1,3 @@
+single command:
+
+docker compose up -d --build
