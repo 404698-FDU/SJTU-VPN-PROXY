@@ -1,8 +1,8 @@
 services:
-  sjtu-vpn-ss:
+  sjtu-vpn-socks:
     build: .
-    image: sjtu-vpn-ss:latest
-    container_name: sjtu-vpn-ss
+    image: sjtu-vpn-socks:latest
+    container_name: sjtu-vpn-socks
     restart: unless-stopped
 
     network_mode: bridge
@@ -18,16 +18,13 @@ services:
       net.ipv6.conf.default.disable_ipv6: "1"
 
     ports:
-      - "8388:8388/tcp"
-      - "8388:8388/udp"
+      - "127.0.0.1:${HOST_SOCKS_PORT:-1080}:1080/tcp"
 
     environment:
-      JACCOUNT: "SET YOUR JACCOUNT HERE"
-      JPASSWORD: "SET YOUR JPASSWORD HERE"
-      VPN_SERVER: "stuv4.vpn.sjtu.edu.cn"
-      VPN_RIGHTID: "@stu.vpn.sjtu.edu.cn"
+      JACCOUNT: "${JACCOUNT}"
+      JPASSWORD: "${JPASSWORD}"
+      VPN_SERVER: "${VPN_SERVER:-stuv4.vpn.sjtu.edu.cn}"
+      VPN_RIGHTID: "${VPN_RIGHTID:-@stu.vpn.sjtu.edu.cn}"
 
-      SS_ADDR: "0.0.0.0"
-      SS_PORT: "8388"
-      SS_METHOD: "aes-256-gcm"
-      SS_PASSWORD: "SET YOUR PASSWORD HERE"
+      SOCKS_ADDR: "0.0.0.0"
+      SOCKS_PORT: "1080"
