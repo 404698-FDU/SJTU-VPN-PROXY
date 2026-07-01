@@ -102,16 +102,16 @@ ssh -o ProxyCommand='nc -X 5 -x 127.0.0.1:1080 %h %p' user@internal-host
 Example with a custom port:
 
 ```bash
-ssh -o ProxyCommand='nc -X 5 -x 127.0.0.1:1080 %h %p' -p 5681 shijunkai@202.120.15.57
+ssh -o ProxyCommand='nc -X 5 -x 127.0.0.1:1080 %h %p' -p <ssh-port> <user>@<internal-host>
 ```
 
 Or add a host entry to `~/.ssh/config`:
 
 ```sshconfig
 Host sjtu-server
-  HostName 202.120.15.57
-  User shijunkai
-  Port 5681
+  HostName <internal-host>
+  User <user>
+  Port <ssh-port>
   ProxyCommand nc -X 5 -x 127.0.0.1:1080 %h %p
 ```
 
@@ -130,7 +130,7 @@ ssh -v \
   -o PubkeyAuthentication=no \
   -o NumberOfPasswordPrompts=0 \
   -o ProxyCommand='nc -X 5 -x 127.0.0.1:1080 %h %p' \
-  -p 5681 shijunkai@202.120.15.57
+  -p <ssh-port> <user>@<internal-host>
 ```
 
 If the output includes `Authentications that can continue: publickey,password`, the proxy and VPN path are working. `Permission denied` is expected in this test because no password is submitted.
