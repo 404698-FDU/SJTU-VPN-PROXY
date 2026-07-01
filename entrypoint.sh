@@ -41,6 +41,13 @@ conn "sjtu-student"
     eap_identity="${JACCOUNT}"
     auto=add
     aaa_identity="@radius.net.sjtu.edu.cn"
+    dpdaction=restart
+    dpddelay=20s
+    dpdtimeout=120s
+    keyingtries=%forever
+    closeaction=restart
+    reauth=no
+    mobike=yes
 EOF_CONF
 
 cat >/etc/ipsec.secrets <<EOF_CONF
@@ -57,6 +64,13 @@ if [ "$rc" -ne 0 ]; then
   ipsec up "sjtu-student"
 fi
 set -e
+
+# strongSwan may install an IPv6 DNS server while this container disables IPv6.
+cat >/etc/resolv.conf <<EOF_CONF
+nameserver 202.120.2.101
+nameserver 202.120.2.100
+options timeout:2 attempts:2
+EOF_CONF
 
 echo "== VPN status =="
 ipsec statusall || true
